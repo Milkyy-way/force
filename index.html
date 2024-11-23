@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Scatterplot Visualization</title> <!-- Updated title for clarity -->
+    <title>Title</title>
     <style>
         body {
             font-family: sans-serif;
         }
         svg {
-            width: 40vw; /* Adjusts SVG size dynamically */
+            width: 40vw;
             height: 40vw;
         }
         div {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px; /* Added space between elements */
+            gap: 20px;
             justify-content: center;
         }
         .list-container {
@@ -26,7 +26,7 @@
             padding: 20px;
             background-color: #f3f3f3;
             border-left: 1px solid #ccc;
-            overflow-y: auto; /* Enables vertical scrolling */
+            overflow-y: auto;
         }
         .list-container h3 {
             font-size: 18px;
@@ -41,7 +41,7 @@
             border-radius: 8px;
             max-height: 100%;
             overflow-y: auto;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for better UI */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             flex-grow: 1;
         }
         #selected-list li {
@@ -59,69 +59,66 @@
             margin-right: 100px;
         }
     </style>
-    <script src="https://d3js.org/d3.v7.min.js"></script> <!-- D3.js library -->
-    <script src="js/scatterplot.problem.js"></script> <!-- Replace with your JavaScript file path -->
-    <link rel="stylesheet" href="styles/style.css"> <!-- Replace with your CSS file path -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="js/scatterplot.problem.js"></script>
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
 <div>
-    <svg viewBox="0 0 1000 1000" id="figure1"></svg> <!-- Scatterplot container 1 -->
-    <svg viewBox="0 0 1000 1000" id="figure2"></svg> <!-- Scatterplot container 2 -->
+    <svg viewBox="0 0 1000 1000" id="figure1"></svg>
+    <svg viewBox="0 0 1000 1000" id="figure2"></svg>
 </div>
 <div>
-    <ul id="selected-list"></ul> <!-- Container to display selected points -->
+    <ul id="selected-list"></ul>
 </div>
 
 <script>
-    d3.csv("./data/car_sample_data.csv") // Path to the CSV file
+    d3.csv("./data/car_sample_data.csv")
         .then(data => {
-            // Process the CSV data to extract relevant columns
+            
             const filteredData = data.map(d => ({
-                Model: d.Model, // Name of the car model
-                Type: d.Type, // Type of car
-                Price: d.Price, // Price of the car
-                Country: d.Country, // Country of origin
-                Reliability: d.Reliability, // Reliability score
-                MPG: d.MPG, // Miles per gallon
-                Weight: d.Weight, // Weight of the car
-                EngineSizeCI: d.EngineSizeCI, // Engine size in cubic inches
-                HP: d.HP // Horsepower
+                Model: d.Model,
+                Type: d.Type,
+                Price: d.Price,
+                Country: d.Country,
+                Reliability: d.Reliability,
+                MPG: d.MPG,
+                Weight: d.Weight,
+                EngineSizeCI: d.EngineSizeCI,
+                HP: d.HP
             }));
 
-            // Create the first scatterplot: MPG vs Price
             scatter_plot(
                 data = filteredData,
-                "#figure1", // SVG container ID for this plot
-                title = "MPG vs Price", // Chart title
-                xCol = "Price", // X-axis data column
-                yCol = "MPG", // Y-axis data column
-                rCol = "Weight", // Radius column (bubble size)
-                legend = [], // Add a legend if required
-                colorCol = "Country", // Color grouping column
-                margin = 150 // Chart margin
+                "#figure1",
+                title = "MPG vs Price",
+                xCol = "Price",
+                yCol = "MPG",
+                rCol = "Weight",
+                legend = [],
+                colorCol = "Country",
+                margin = 150
             );
 
-            // Create the second scatterplot: MPG vs Engine Size
             scatter_plot(
                 data = filteredData,
-                "#figure2", // SVG container ID for this plot
-                title = "MPG vs Engine Size", // Chart title
-                xCol = "EngineSizeCI", // X-axis data column
-                yCol = "MPG", // Y-axis data column
-                rCol = "Weight", // Radius column (bubble size)
-                legend = [], // Add a legend if required
-                colorCol = "Country", // Color grouping column
-                margin = 150 // Chart margin
+                "#figure2",
+                title = "MPG vs Engine Size",
+                xCol = "EngineSizeCI",
+                yCol = "MPG",
+                rCol = "Weight",
+                legend = [],
+                colorCol = "Country",
+                margin = 150
             );
 
-            // Event listener for mouse movement to update the selected points
             document.addEventListener("mousemove", event => {
-                const listBox = d3.select("#selected-list"); // Container for selected items
+                const listBox = d3.select("#selected-list");
 
-                const selectedPoints = Array.from(document.querySelectorAll(".selected")); // Collect selected points
-                const ids = [...new Set(selectedPoints.map(d => +d.id.split(" ")[0].slice(3)))]; // Extract unique IDs
+                const selectedPoints = Array.from(document.querySelectorAll(".selected"));
+                const ids = [...new Set(selectedPoints.map(d => +d.id.split(" ")[0].slice(3)))];
 
-                // Clear the list before updating with new items
+                
                 listBox.selectAll("li").remove();
 
                 if (ids.length > 0) {
